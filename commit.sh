@@ -1,1 +1,1 @@
-git commit -m "[01] init ftpc."
+git commit -m "[02] add .ignore"
