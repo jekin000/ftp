@@ -68,6 +68,7 @@ class FtpClient(object):
             debug_print('Can not connect or login to Server.')
             debug_print(traceback.format_exc())
             self.ftp.close()
+            return
 
         try:
             self.ftp.cwd(self.remotdir)
@@ -75,6 +76,7 @@ class FtpClient(object):
             debug_print('Change Dir Exception')
             debug_print(traceback.format_exc())
             self.ftp.close()
+        return
             
     def ls(self):
         try:
