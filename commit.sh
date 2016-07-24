@@ -1,1 +1,1 @@
-git commit -m "[04] finish ftp upload"
+git commit -m "[05] add commandline to ftpc"

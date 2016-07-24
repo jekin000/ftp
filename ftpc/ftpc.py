@@ -5,6 +5,7 @@ import ConfigParser
 import os
 import sys
 import re
+import argparse
 
 SUCCESS= 0
 FAIL   = -1
@@ -87,7 +88,7 @@ class FtpClient(object):
             debug_print('Can not connect or login to Server.')
             debug_print(traceback.format_exc())
             self.ftp.close()
-            return
+            sys.exit(1)
 
         try:
             self.ftp.cwd(self.remotdir)
@@ -95,6 +96,7 @@ class FtpClient(object):
             debug_print('Change Dir Exception')
             debug_print(traceback.format_exc())
             self.ftp.close()
+            sys.exit(1)
         return
             
     def ls(self):
@@ -161,6 +163,31 @@ class FtpClient(object):
 
         file_handler.close()
         return SUCCESS
-    
-            
+
+class ParmParse(object):
+    def __init__(self):
+        pass
+    def do_upload(self):
+        f = FtpClient()
+        f.login()
+        f.upload_files()
+        f.close()
+        return
+
+    def parse(self,parm):
+        parser = argparse.ArgumentParser()
+        subparsers = parser.add_subparsers(help='sub-command help',dest='subparse_name')
+
+        subparser_upload = subparsers.add_parser('upload',help='upload files to server')
+        subparser_upload.set_defaults(func=self.do_upload)
+
+
+        args = parser.parse_args(parm)
+        if args.subparse_name == 'upload':
+            args.func()
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        parser = ParmParse()
+        parser.parse(sys.argv[1:])
     
